@@ -15,7 +15,7 @@ public class Bat {
 	private int XSIZE = 40;		// width of the bat
 	private int YSIZE = 10;		// height of the bat
 	private static final int XSTEP = 10;		// amount of pixels to move in one keystroke
-	private static final int YPOS = 200;		// vertical position of the bat
+	private static final int YPOS = 215;		// vertical position of the bat
 
 	private JPanel panel;
 	private Dimension dimension;
@@ -62,8 +62,7 @@ public class Bat {
 		x = x - XSTEP;
 
 		if (x < 0) {					// hits left wall
-			x = 0;
-			playClip (1);
+			x = dimension.width - XSIZE;
 		}
 
 	}
@@ -77,8 +76,7 @@ public class Bat {
 		x = x + XSTEP;
 
 		if (x + XSIZE >= dimension.width) {		// hits right wall
-			x = dimension.width - XSIZE;
-			playClip (1);
+			x = 0;
 		}
 
 	}

@@ -10,9 +10,9 @@ public class GameFrame extends JFrame implements ActionListener {
 	AudioClip playSound = null;
 
 	public GameFrame () {
-		setSize (615, 310);
+		setSize (615, 300);
 		setTitle ("Bat and Ball Game");
-
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		gamePanel = new GamePanel ();			// create the Game Panel
@@ -23,9 +23,17 @@ public class GameFrame extends JFrame implements ActionListener {
 
 		JPanel buttonPanel = new JPanel ();
 
-		JButton startB = new JButton ("Start Game");
-		startB.addActionListener (this);
-		buttonPanel.add (startB);
+		JButton startEasy = new JButton ("Start Easy Game");
+		startEasy.addActionListener (this);
+		buttonPanel.add (startEasy);
+
+		JButton startMedium = new JButton ("Start Medium Game");
+		startMedium.addActionListener (this);
+		buttonPanel.add (startMedium);
+
+		JButton startHard = new JButton ("Start Hard Game");
+		startHard.addActionListener (this);
+		buttonPanel.add (startHard);
 
 		JButton stopB = new JButton ("Stop Game");
 		stopB.addActionListener (this);
@@ -34,6 +42,7 @@ public class GameFrame extends JFrame implements ActionListener {
 		JButton closeB = new JButton ("Close");
 		closeB.addActionListener (this);
 		buttonPanel.add (closeB);
+
 
 		add (buttonPanel, "South");
 
@@ -64,9 +73,19 @@ public class GameFrame extends JFrame implements ActionListener {
 	public void actionPerformed (ActionEvent e) {
 		String command = e.getActionCommand ();
 
-		if (command.equals ("Start Game")) {
+		if (command.equals ("Start Easy Game")) {
 			gamePanel.requestFocus();
-			gamePanel.startGame();
+			gamePanel.startGame(5);
+		}
+		else
+		if (command.equals ("Start Medium Game")) {
+			gamePanel.requestFocus();
+			gamePanel.startGame(7);
+		}
+		else
+		if (command.equals ("Start Hard Game")) {
+			gamePanel.requestFocus();
+			gamePanel.startGame(10);
 		}
 		else
 		if (command.equals ("Stop Game")) {

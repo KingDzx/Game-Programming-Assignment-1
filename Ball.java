@@ -1,7 +1,4 @@
-import java.awt.Dimension;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
@@ -13,14 +10,17 @@ public class Ball {
 
 	private static final int XSIZE = 10;
 	private static final int YSIZE = 10;
-	private int DY = 7;
-	private int DX = 7;
+	private int DY = 5;
+	private int DX = 5;
 
 	private JPanel panel;
 	private Bat bat;
 	private Random random;
 	private int x;
 	private int y;
+	private int score;
+	private String Scoreboard;
+	private boolean isAlive;
 
 	AudioClip hitBatSound;
 	AudioClip fallOffSound;
@@ -29,7 +29,7 @@ public class Ball {
 	private Color backgroundColor;
 	private Dimension dimension;
 
-	public Ball (JPanel p, Bat b) {
+	public Ball (JPanel p, Bat b, int stage) {
 		panel = p;
 		bat = b;
 		Graphics g = panel.getGraphics ();
@@ -38,19 +38,35 @@ public class Ball {
 		backgroundColor = panel.getBackground ();
 
 		random = new Random();
-		setPosition();					// set initial position of ball
+		score = 0;
+		Scoreboard = "";
+		isAlive = true;
+
+		x = random.nextInt(dimension.width/2) + dimension.width/4;// randomly generate x location between 1/4 and 3/4 of the screen
+
+		if (stage == 5){
+			y = 75;
+		}else if (stage == 7){
+			y = 110;
+		}else{
+			y = 155;
+		}
 
 		loadClips();
 	}
 
-	public void setPosition () {
-		x = random.nextInt(dimension.width/2) + dimension.width/4;// randomly generate x location between 1/4 and 3/4 of the screen
-		y = 75;						// set y to top of the panel
+
+	private void setScore(String s){
+		Scoreboard = s;
 	}
 
 	public void draw (Graphics2D g2) {
 		g2.setColor (Color.BLACK);
 		g2.fill (new Ellipse2D.Double (x, y, XSIZE, YSIZE));
+
+		g2.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+		g2.setColor(Color.MAGENTA);
+		g2.drawString(Scoreboard, 0, 20);
 	}
 
 	public void erase (Graphics2D g2) {
@@ -99,11 +115,14 @@ public class Ball {
 		y = y + DY;
 		x = x + DX;
 
+		setScore("Score " + new Integer(score).toString());
+
 		if (batHitsBall() || hitTop() || brickHit) {
 			playClip (1);			// play clip if bat hits ball
 			if (brickHit){
 				//DX *= -1;
-				y = y - DY - 5;
+				y = y - (DY * 2);
+				score += 1;
 			}
 			DY *= -1;
 
@@ -111,8 +130,10 @@ public class Ball {
 		}else if (hitBottom()){					// play clip if ball falls out at bottom
 			try {					// take a rest if bat hits ball or
 				playClip (2);
-				Thread.sleep (2000);		//   ball falls out of play.
-				setPosition ();
+				isAlive = false;
+				setScore("GAME OVER!!!");
+				Thread.sleep (1000);		//   ball falls out of play.
+				//setPosition ();
 			}
 			catch (InterruptedException e) {}
 		}
@@ -149,5 +170,7 @@ public class Ball {
 			fallOffSound.play();
 
 	}
-
+	public boolean checkAlive(){
+		return isAlive;
+	}
 }

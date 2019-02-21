@@ -114,7 +114,11 @@ public class GamePanel extends JPanel implements
 				return;
 			}
 		}
-		ball.move(false);
+		if (ball.checkAlive()){
+			ball.move(false);
+		}else{
+			endGame();
+		}
 	}
 
 	public void gameRender () {				// draw the game objects
@@ -126,24 +130,23 @@ public class GamePanel extends JPanel implements
 			if (b.checkStatus())
 				b.draw(imageContext);
 		}
-
 		Graphics2D g2 = (Graphics2D) getGraphics();				// get the graphics context for the panel
 		g2.drawImage(image, 0, 0,null);				// draw the image on the panel
 		g2.dispose();
 	}	
 
-	public void startGame() {				// initialise and start the game thread 
+	public void startGame(int numBricks) {				// initialise and start the game thread
 
 		if (gameThread == null) {
 			isRunning = true;
 			bat = new Bat (this);
-			ball = new Ball (this, bat);
+			ball = new Ball (this, bat, numBricks);
 
 			bricks = new ArrayList<>();
 			int x = (this.getWidth()/2) + 1;
 			int y = 0;
 
-			for (int i=1; i<6; i++){
+			for (int i=1; i<=numBricks; i++){
 				x -= 25;
 				int xMove = 0;
 				for (int j=0; j<i; j++){

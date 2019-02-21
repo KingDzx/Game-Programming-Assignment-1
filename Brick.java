@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Brick {
     private int XSIZE = 50;
-    private int YSIZE = 15 ;
+    private int YSIZE = 15;
 
     private Ball ball;
     private JPanel panel;
@@ -60,4 +60,5 @@ public class Brick {
     public boolean checkStatus(){
         return isAlive;
     }
+
 }
