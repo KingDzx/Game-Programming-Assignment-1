@@ -65,7 +65,7 @@ public class Ball {
 		g2.fill (new Ellipse2D.Double (x, y, XSIZE, YSIZE));
 
 		g2.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-		g2.setColor(Color.MAGENTA);
+		g2.setColor(Color.RED);
 		g2.drawString(Scoreboard, 0, 20);
 	}
 
